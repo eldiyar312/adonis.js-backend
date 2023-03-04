@@ -1,0 +1,90 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: number
+          required: true
+        name:
+          type: string
+          required: true
+          description: имя товара или чека
+        sku:
+          type: string
+          required: true
+          description: артикул товара или чека
+        unit:
+          type: string
+          required: true
+          description: единица изменения
+        price:
+          type: number
+          required: true
+          description: цена
+        tax:
+          type: string
+          required: true
+          description: налог НДС
+        subject:
+          type: string
+          required: true
+          description: Предмет расчёта
+        paymentMethodType:
+          type: number
+          required: true
+          description: Способ оплаты
+        img:
+          type: string
+          required: true
+          description: base 64
+        recipe:
+          type: boolean
+          required: true
+          default: false
+          description: true = (рецепт, составной товар) false = обычный товар
+        productCategoryId:
+          type: number
+          required: true
+          description: Идентификатор категории товара
+        accountId:
+          type: number
+          required: true
+          description: Идентификатор аккаунта
+    Ingredient:
+      type: object
+      properties:
+        name:
+          type: string
+          required: true
+          description: имя товара или чека
+        sku:
+          type: string
+          required: true
+          description: артикул
+        unit:
+          type: string
+          required: true
+          description: единица изменения
+        price:
+          type: number
+          required: true
+          description: цена
+        tax:
+          type: string
+          required: true
+          description: налог НДС
+        weight:
+          type: number
+          minimum: 1
+          maximum: 9999999
+          required: true
+          description: Вес, (весимость)
+        img:
+          type: string
+          required: true
+          description: base 64
+        accountId:
+          type: number
+          required: true
+          description: Идентификатор аккаунта

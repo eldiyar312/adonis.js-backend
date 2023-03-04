@@ -1,0 +1,87 @@
+components:
+  schemas:
+    Planogram:
+      type: object
+      properties:
+        id:
+          type: number
+          required: true
+          description: идентификатор планограммы
+        automatPrice:
+          type: number
+          required: true
+          description: цена в автомате
+        maxValue:
+          type: number
+          required: true
+          description: Емкость слота
+        balance:
+          type: number
+          required: true
+          description: текущий остаток
+        slot:
+          type: number
+          required: true
+          description: Номер слота
+        automatId:
+          type: number
+          required: true
+          description: идентификатор автомата
+        productId:
+          type: number
+          required: true
+          description: идентификатор продукта
+    PulsePlanogram:
+      type: object
+      properties:
+        id:
+          type: number
+          required: true
+          description: идентификатор пульсовой планограммы
+        buttonIndex:
+          type: number
+          description: индекс кнопки
+          required: true
+        pulseIndexExit:
+          type: number
+          description: Выход пульсового индекса
+          required: true
+        productName:
+          type: string
+          description: Название продукта
+          required: true
+        count:
+          type: number
+          description: Количество продукта
+          required: true
+        unitPrice:
+          type: number
+          description: Цена продукта
+          required: true
+        pulseUnitId:
+          type: number
+          description: Идентификатор пульсовой единицы
+          required: true
+        automatId:
+          type: number
+          description: Идентификатор автомата
+          required: true
+        accountId:
+          type: number
+          description: Идентификатор аккаунта
+          required: true
+    PulseUnit:
+      type: object
+      properties:
+        id:
+          type: number
+          required: true
+          description: идентификатор пульсовой единицы
+        name:
+          type: string
+          required: true
+          description: название пульсовой единицы
+        choiceStep:
+          type: number
+          required: true
+          description: Шаг произвольного выбора

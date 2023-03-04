@@ -1,0 +1,300 @@
+/api/products:
+  get:
+    summary: Get all products ingredietns recipes
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    responses:
+      200:
+        description: OK
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 128
+                required: true
+              sku:
+                type: string
+                maxLength: 64
+                required: false
+              unit:
+                type: string
+                enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+                required: false
+              price:
+                type: number
+                minimum: 1
+                maximum: 999999.99
+                required: false
+              tax:
+                type: string
+                enum: ['1', '2', '3', '4', '5', '6']
+                required: true
+              subject:
+                type: string
+                enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+                required: true
+              paymentMethodType:
+                type: number
+                minimum: 1
+                maximum: 7
+                required: true
+              img:
+                type: string
+                required: false
+              productCategoryId:
+                type: number
+                required: true
+    responses:
+      200:
+        description: OK
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              productsId:
+                type: array
+                required: true
+                items:
+                  type: number
+                  required: false
+    responses:
+      200:
+        description: OK
+
+/api/products/{id}:
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      200:
+        description: OK
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: number
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 128
+                required: true
+              sku:
+                type: string
+                maxLength: 64
+                required: false
+              unit:
+                type: string
+                enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+                required: false
+              price:
+                type: number
+                minimum: 1
+                maximum: 999999.99
+                required: false
+              tax:
+                type: string
+                enum: ['1', '2', '3', '4', '5', '6']
+                required: true
+              subject:
+                type: string
+                enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+                required: true
+              paymentMethodType:
+                type: number
+                minimum: 1
+                maximum: 7
+                required: true
+              img:
+                type: string
+                required: false
+              productCategoryId:
+                type: number
+                required: true
+    responses:
+      200:
+        description: OK
+
+/api/product/ordinary:
+  get:
+    summary: Получить список обычных продуктов
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    responses:
+      200:
+        description: OK
+
+/api/product/bulk:
+  post:
+    summary: Создание продуктов массивом
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              products:
+                type: array
+                required: true
+                items:
+                  type: object
+                  required: true
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 128
+                      required: true
+                    sku:
+                      type: string
+                      maxLength: 64
+                      required: false
+                    unit:
+                      type: string
+                      enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+                      required: false
+                    price:
+                      type: number
+                      minimum: 1
+                      maximum: 999999.99
+                      required: false
+                    tax:
+                      type: string
+                      enum: ['1', '2', '3', '4', '5', '6']
+                      required: false
+                    subject:
+                      type: string
+                      enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+                      required: false
+                    img:
+                      type: string
+                      required: false
+                    paymentMethodType:
+                      type: number
+                      minimum: 1
+                      maximum: 7
+                      required: false
+                    productCategoryId:
+                      type: number
+                      required: false
+    responses:
+      200:
+        description: OK
+
+/api/product/filter:
+  get:
+    summary: get products ingredient recipes by pagination, filter
+    security:
+      - bearerAuth: []
+    tags:
+      - products
+    parameters:
+      - name: page
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: pageSize
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: sortedBy
+        in: path
+        required: false
+        schema:
+          type: string
+          enum: [name, sku, unit, categoryName, paymentMethodType, subject, tax, price]
+      - name: sortedDesc
+        in: path
+        required: false
+        schema:
+          type: boolean
+      - name: filter
+        in: path
+        required: false
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              maxLength: 128
+              required: false
+            sku:
+              type: string
+              maxLength: 64
+              required: false
+            unit:
+              type: string
+              enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+              required: false
+            priceStart:
+              type: number
+              minimum: 1
+              maximum: 999999.99
+              required: false
+            priceEnd:
+              type: number
+              minimum: 1
+              maximum: 999999.99
+              required: false
+            tax:
+              type: string
+              enum: ['1', '2', '3', '4', '5', '6']
+              required: false
+            subject:
+              type: string
+              enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+              required: false
+            paymentMethodType:
+              type: number
+              minimum: 1
+              maximum: 7
+              required: false
+            productCategoryId:
+              type: number
+              required: false
+    responses:
+      200:
+        description: OK

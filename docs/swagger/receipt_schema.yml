@@ -1,0 +1,1087 @@
+components:
+  schemas:
+    Receipt:
+      type: object
+      properties:
+        id:
+          type: UUID(v4)
+          personalOffice: true
+          cube: true
+          description: Номер чека
+        documentNumber:
+          type: int
+          personalOffice: false
+          cube: false
+          description: Номер фискального документа
+        operationNumber:
+          type: Bigint
+          personalOffice: false
+          cube: false
+          description: Сквозной номер документа
+        orderId:
+          type: UUID(v4)
+          personalOffice: false
+          cube: false
+          description: Идентификатор заказа, для которого пробит чек
+        companyName:
+          type: varchar(255)
+          personalOffice: false
+          cube: false
+          description: Название организации
+        calculationAddress:
+          type: varchar(128)
+          personalOffice: false
+          cube: Необходим для фискализации в ОД
+          description: Адрес установки ККТ для проведения расчетов
+        calculationPlace:
+          type: varchar(128)
+          personalOffice: false
+          cube: Необходим для фискализации в ОД
+          description: Место проведения расчетов
+        content:
+          type: object
+          personalOffice: true
+          cube: true
+          description: jsonb - Содержимое чека
+          properties:
+            type:
+              type: number
+              personalOffice: true
+              cube: true
+              enum: [1, 2, 3, 4]
+              description: >
+                Тип чека:
+                  * `1` - Приход
+                  * `2` - Возврат прихода
+                  * `3` - Расход
+                  * `4` - Возврат расхода
+            discountMoney:
+              type: float4
+              personalOffice: false
+              cube: false
+              description: Скидка по чеку, рубли
+            discountPercent:
+              type: float4
+              personalOffice: false
+              cube: false
+              description: Скидка по чеку, проценты
+            customerContact:
+              type: varchar(64)
+              personalOffice: false
+              cube: false
+              description: Email или телефон клиента
+            positions:
+              type: array
+              personalOffice: true
+              cube: true
+              description: jsonb[] - Массив позиций чека
+              items:
+                type: object
+                properties:
+                  id:
+                    type: UUID
+                    personalOffice: true
+                    cube: true
+                    description: UUID товара (NOTE пустая строка, если по свободной цене)
+                  externalId:
+                    type: varchar(64)
+                    personalOffice: false
+                    cube: false
+                    description: Уникальный идентификатор товара в рамках аккаунта
+                  quantity:
+                    type: float4
+                    personalOffice: true
+                    cube: true
+                    description: Количество предмета расчета (максимум 3 знака после запятой)
+                  price:
+                    type: float4
+                    personalOffice: true
+                    cube: true
+                    description: Стоимость единицы предмета расчета
+                  tax:
+                    type: integer
+                    personalOffice: true
+                    cube: true
+                    enum: [1, 2, 3, 4, 5, 6]
+                    description: >
+                      Ставка НДС (возможные значения)
+                        * `1` - 20%
+                        * `2` - 10%
+                        * `3` - Ставка расч. 20/120
+                        * `4` - Ставка расч. 10/110
+                        * `5` - 0%
+                        * `6` - Без НДС
+                  text:
+                    type: varchar
+                    personalOffice: true
+                    cube: true
+                    description: Наименование предмета расчета(товара)
+                  paymentMethodType:
+                    type: integer
+                    personalOffice: true
+                    cube: true
+                    enum: [1, 2, 3, 4, 5, 6, 7]
+                    description: >
+                      Признак способа расчета (возможные значения)
+                        * `1` - Предоплата 100%
+                        * `2` - Частичная предоплата
+                        * `3` - Аванс
+                        * `4` - Полный расчет
+                        * `5` - Частичный расчет и кредит
+                        * `6` - Передача в кредит
+                        * `7` - Оплата кредита
+                  paymentSubjectType:
+                    type: integer
+                    personalOffice: true
+                    cube: true
+                    enum:
+                      [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16,
+                        17,
+                        18,
+                        19,
+                        20,
+                        21,
+                        22,
+                        23,
+                        24,
+                        25,
+                        26,
+                      ]
+                    description: >
+                      Признак предмета расчета (возможные значения)
+                        * `1` - Товар
+                        * `2` - Подакцизный товар
+                        * `3` - Работа
+                        * `4` - Услуга
+                        * `5` - Ставка азартной игры
+                        * `6` - Выигрыш азартной игры
+                        * `7` - Лотерейный билет
+                        * `8` - Выигрыш лотереи
+                        * `9` - Предоставление РИД
+                        * `10` - Платеж
+                        * `11` - Агентское вознаграждение
+                        * `12` - Выплата
+                        * `13` - Иной предмет расчета
+                        * `14` - Имущественное право
+                        * `15` - Внереализационный доход
+                        * `16` - Иные платежи и взносы
+                        * `17` - Торговый сбор
+                        * `18` - Курортный сбор
+                        * `19` - Залог
+                        * `20` - Расход
+                        * `21` - Взносы на обязательное пенсионное страхование ИП
+                        * `22` - Взносы на обязательное пенсионное страхование
+                        * `23` - Взносы на обязательное медицинское страхование ИП
+                        * `24` - Взносы на обязательное медицинское страхование
+                        * `25` - Взносы на обязательное социальное страхование
+                        * `26` - Платёж казино
+                  SKU:
+                    type: varchar(64)
+                    personalOffice: false
+                    cube: false
+                    description: Код товара
+                  priceBrutto:
+                    type: float4
+                    personalOffice: true
+                    cube: true
+                    description: Цена до применения скидок
+                  discountMoney:
+                    type: float4
+                    personalOffice: false
+                    cube: false
+                    description: Скидка по позиции, рубли
+                  discountPercent:
+                    type: float4
+                    personalOffice: false
+                    cube: false
+                    description: Скидка по позиции, проценты
+                  modifyOptions:
+                    type: array
+                    personalOffice: false
+                    cube: false
+                    description: jsonb[] - Опции модификаторов товара, выбранные при продаже
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: UUID(v4)
+                          required: true
+                          description: Идентификатор опции
+                        quantity:
+                          type: integer
+                          required: true
+                          description: Кол-во раз, которое опция добавлена к товару
+                  customProperties:
+                    type: array
+                    personalOffice: false
+                    cube: false
+                    description: jsonb[] - Дополнительные параметры
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: varchar(255)
+                          required: true
+                          description: Название параметра
+                        value:
+                          type: varchar(4096)
+                          required: true
+                          description: Значение параметра
+                  loyalties:
+                    type: array
+                    personalOffice: false
+                    cube: false
+                    description: jsonb[] - Cписок акций, примененных на позицию
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: UUID(v4)
+                          description: Идентификатор акции
+                        name:
+                          type: varchar(255)
+                          description: Название акции
+                        difference:
+                          type: float
+                          description: Разница между старой ценой и ценой с примененной акцией
+                        customProperties:
+                          type: array
+                          description: jsonb[] - Кастомные свойства примененной акции
+                          items:
+                            type: object
+                            properties:
+                              key:
+                                type: varchar(255)
+                                required: true
+                                description: Название параметра
+                              value:
+                                type: varchar(255)
+                                required: true
+                                description: Значение параметра
+                  nomenclatureCode:
+                    type: varchar
+                    personalOffice: false
+                    cube: false
+                    description: Код товарной номенклатуры, 1162 (Строка, содержащая base64 кодированный массив от 1 до 32 байт либо null)
+                  nomenclatureString:
+                    type: varchar
+                    personalOffice: false
+                    cube: false
+                    description: Непреобразованное значение считанного сканером кода товарной номенклатуры
+                  minPrice:
+                    type: float4
+                    personalOffice: false
+                    cube: false
+                    description: Минимальная цена, за которую может быть продан товар из этой позиции чека
+                  supplierInfo:
+                    type: object
+                    personalOffice: false
+                    cube: false
+                    description: jsonb - Данные поставщика, 1224
+                    properties:
+                      name:
+                        type: varchar(239)
+                        required: false
+                        description: Наименование поставщика, 1225
+                      phoneNumbers:
+                        type: array
+                        required: false
+                        description: varchar(19)[] - Телефон поставщика, 1171. Массив строк длиной от 1 до 19 символов, формат
+                        items:
+                          type: varchar(19)
+                  supplierINN:
+                    type: varchar(12)
+                    personalOffice: false
+                    cube: false
+                    description: ИНН поставщика, 1226
+                  agentType:
+                    type: number
+                    personalOffice: false
+                    cube: false
+                    enum: [0, 1, 2, 3, 4, 5, 6]
+                    description: >
+                      Признак агента по предмету расчета, 1222
+                        * `0` - банковский платежный агент
+                        * `1` - банковский платежный субагент
+                        * `2` - платежный агент
+                        * `3` - платежный субагент
+                        * `4` - поверенный
+                        * `5` - комиссионер
+                        * `6` - иной агент
+                  agentInfo:
+                    type: object
+                    personalOffice: false
+                    cube: false
+                    description: jsonb - Данные агента, 1223 (На текущий момент длина сериализованных данных тэга не должна превышать 243 байта)
+                    properties:
+                      paymentAgentOperation:
+                        type: varchar(24)
+                        required: false
+                        description: Операция платежного агента, 1044
+                      paymentOperatorName:
+                        type: varchar(64)
+                        required: false
+                        description: Наименование оператора перевода, 1026
+                      paymentOperatorAddress:
+                        type: varchar(243)
+                        required: false
+                        description: Адрес оператора перевода, 1005
+                      paymentOperatorINN:
+                        type: varchar(12)
+                        required: false
+                        description: ИНН оператора перевода, 1016
+                      paymentTransferOperatorPhoneNumbers:
+                        type: array
+                        required: false
+                        description: Телефон оператора перевода, 1075. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+                        items:
+                          type: varchar(19)
+                      paymentAgentPhoneNumbers:
+                        type: array
+                        required: false
+                        description: Телефон платежного агента, 1073. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+                        items:
+                          type: varchar(19)
+                      paymentOperatorPhoneNumbers:
+                        type: array
+                        required: false
+                        description: Телефон оператора по приему платежей, 1074. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+                        items:
+                          type: varchar(19)
+                  additionalAttribute:
+                    type: varchar(64)
+                    personalOffice: false
+                    cube: false
+                    description: Дополнительный реквизит предмета расчета, 1191
+                  manufacturerCountryCode:
+                    type: varchar(3)
+                    personalOffice: false
+                    cube: false
+                    description: Код страны происхождения товара, 1230
+                  customsDeclarationNumber:
+                    type: varchar(32)
+                    personalOffice: false
+                    cube: false
+                    description: Номер таможенной декларации, 1231
+                  excise:
+                    type: float8
+                    personalOffice: false
+                    cube: false
+                    description: Акциз, 1229
+                  addedAt:
+                    type: timestamp with time zone
+                    personalOffice: false
+                    cube: false
+                    description: Дата и время добавления позиции в чек или её последнего изменения
+                  barcodes:
+                    type: varchar(64)[]
+                    personalOffice: false
+                    cube: false
+                    description: Список штрих-кодов позиции чека
+                  addingType:
+                    type: enum
+                    personalOffice: false
+                    cube: false
+                    description: Способ добавления позиции в чек (../references.md#способ-добавления-позиции-в-чек)
+                  slotInfo:
+                    type: object
+                    personalOffice: false
+                    cube: false
+                    description: jsonb - Информация о слоте.(возможные значения)
+                    properties:
+                      slotId:
+                        type: bigint
+                        required: true
+                        description: Идентификатор слота
+                      isBlocked:
+                        type: boolean
+                        required: true, но в случае false передавать не обязательно
+                        description: Заблокирован ли данный slotID
+                      maxValue:
+                        type: float8
+                        required: false
+                        description: Вместимость слота в автомате
+                  taxAmount:
+                    type: float4
+                    personalOffice: false
+                    cube: false
+                    description: Сумма налога по позиции
+                  index:
+                    type: integer
+                    personalOffice: false
+                    cube: false
+                    description: Номер позиции в чеке
+                  parentIndex:
+                    type: integer
+                    personalOffice: false
+                    cube: false
+                    description: Номер позиции в оригинальном чеке (для чека возврата)
+                  maxDiscountPercent:
+                    type: float4
+                    personalOffice: false
+                    cube: false
+                    description: Максимальный процент скидк
+            checkClose:
+              type: object
+              personalOffice: false
+              cube: Необходим для фискализации в ОД
+              description: jsonb - Параметры закрытия чека
+              properties:
+                taxationSystem:
+                  type: int
+                  required: true
+                  description: Система налогообложения
+                payments:
+                  type: array
+                  required: true
+                  description: jsonb[] - Массив оплат
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: number
+                        required: true
+                        enum: [0, 1, 13, 14, 15]
+                        description: >
+                          Тип оплаты
+                            * `0` - Наличные
+                            * `1` - Электронные
+                            * `13` - Аванс
+                            * `14` - Кредит
+                            * `15` - БСО (Бланк строгой отчётности)
+                      amount:
+                        type: float8
+                        required: true
+                        description: Сумма платежа типом оплаты
+                      processedAt:
+                        type: date
+                        required: true
+                        description: Дата и время проведения оплаты
+                      index:
+                        type: integ
+                        required: true
+                        description: Номер платежа в чеке
+                      parentIndex:
+                        type: integer
+                        required: true
+                        description: Номер платежа в оригинальном чеке (для чека возврата)
+                      acquiringData:
+                        type: object
+                        required: true
+                        description: jsonb - Эквайринговый слип
+                        properties:
+                          id:
+                            type: UUID(v4)
+                            required: true
+                            description: Идентификатор
+                          type:
+                            type: string
+                            required: true
+                            enum: ['purchase', 'void', 'refund', 'purchasewithcashback']
+                            description: Тип слипа. Возможные значения (purchase, void, refund, purchasewithcashback)
+                          date:
+                            type: timestamp with time zone
+                            required: false
+                            description: Дата операции
+                          cashierId:
+                            type: UUID(v4)
+                            required: true
+                            description: Идентификатор кассира
+                          amount:
+                            type: float8
+                            required: true
+                            description: Сумма
+                          acquirerBankName:
+                            type: varchar(64)
+                            required: false
+                            description: Наименование банка
+                          transactionId:
+                            type: varchar(64)
+                            required: false
+                            description: ID операции в банке
+                          slipNumber:
+                            type: varchar(64)
+                            required: false
+                            description: Номер слипа
+                          approvalCode:
+                            type: varchar(64)
+                            required: false
+                            description: Код подтверждения
+                          terminalId:
+                            type: varchar(20)
+                            required: false
+                            description: Id терминала
+                          maskPan:
+                            type: varchar(19)
+                            required: false
+                            description: Маскированный номер карты
+                          AID:
+                            type: varchar(18)
+                            required: false
+                            description: AID - номер авторизации в сети
+                          TVR:
+                            type: varchar(16)
+                            required: false
+                            description: TVR - атрибут слипа
+                          TSI:
+                            type: varchar(16)
+                            required: false
+                            description: TSI - атрибут слипа
+                          APN:
+                            type: varchar(64)
+                            required: false
+                            description: APN - атрибут слипа. Тип сети авторизации(Тип карты)
+                          IIN:
+                            type: varchar(64)
+                            required: false
+                            description: IIN - атрибут слипа. Тип карты MasterCard/Visa
+                          RRN:
+                            type: varchar(64)
+                            required: false
+                            description: RRN - атрибут слипа. Номер операции для возвратов
+                          ARQC:
+                            type: varchar(64)
+                            required: false
+                            description: ARQC - атрибут слипа. Криптограмма, генерируемая на основе данных транзакции
+                          signNeeded:
+                            type: boolean
+                            required: false
+                            description: Требуется ли подпись клиента
+                          expirationDate:
+                            type: varchar(4)
+                            required: false
+                            description: Дата окончания срока действия карты
+                          companyName:
+                            type: varchar(255)
+                            required: false
+                            description: Название организации
+                          customerContact:
+                            type: varchar(64)
+                            required: false
+                            description: Email или телефон клиента
+                          calculationAddress:
+                            type: varchar(128)
+                            required: false
+                            description: Адрес установки ККТ для проведения расчетов
+                          respCode:
+                            type: varchar(4)
+                            required: false
+                            description: Код ответа при оплате
+                          errorCode:
+                            type: varchar(64)
+                            required: false
+                            description: Код ошибки при оплате
+                          errorMessage:
+                            type: varchar(1024)
+                            required: false
+                            description: Описание ошибки при оплате
+                          text:
+                            type: text
+                            required: false
+                            description: Текст слипа
+                          cardholder:
+                            type: varchar(255)
+                            required: false
+                            description: Имя держателя карты
+                          acquirerAgentName:
+                            type: varchar(255)
+                            required: false
+                            description: Посредник до банка эквайера
+                          cashlessType:
+                            type: number
+                            required: true
+                            enum: [1, 2, 3]
+                            description: >
+                              Тип безналичной оплаты (возможные значения)
+                                * `1` - Безналичные
+                                * `2` - Картой
+                                * `3` - QR-код
+                          qrPayTransaction:
+                            type: object
+                            required: false
+                            description: jsonb - В случае оплаты через Сбербанк ПлатиQR
+                            properties:
+                              operationId:
+                                type: varchar(255)
+                                required: false
+                                description: Идентификатор операции
+                              orderId:
+                                type: varchar(255)
+                                required: false
+                                description: Идентификатор чека
+                          merchantId:
+                            type: varchar(64)
+                            required: false
+                            description: Идентификатор владельца терминала (Merchant ID)
+                          currency:
+                            type: integer
+                            required: false
+                            description: Код валюты согласно ISO 4217
+                          spasibo:
+                            type: object
+                            required: false
+                            description: jsonb - СПАСИБО транзакции по платежу
+                            properties:
+                              credit:
+                                type: object
+                                properties:
+                                  idTransaction:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Идентификатор транзакции
+                                  dateAndTime:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Дата и время транзакции в исходном формате
+                                  bonuses:
+                                    type: bigint
+                                    required: false
+                                    description: Количество списанных бонусов в мин. единицах
+                                  amountToPay:
+                                    type: bigint
+                                    required: false
+                                    description: Сумма к оплате с учетом вычтеных бонусов в мин. единицах
+                                  totalAmount:
+                                    type: bigint
+                                    required: false
+                                    description: Сумма до вычета бонусов
+                                  cheque:
+                                    type: object
+                                    required: false
+                                    description: jsonb[] - Список позиций
+                                    properties:
+                                      product:
+                                        type: varchar(255)
+                                        required: false
+                                        description: Название товара
+                                      quantity:
+                                        type: float8
+                                        required: false
+                                        description: Количество товара
+                                      amount:
+                                        type: bigint
+                                        required: false
+                                        description: полная сумма всех товаров данной категории
+                                  discount:
+                                    type: object
+                                    required: false
+                                    description: jsonb[] - Список позиций
+                                    properties:
+                                      product:
+                                        type: varchar(255)
+                                        required: false
+                                        description: Название товара
+                                      quantity:
+                                        type: float8
+                                        required: false
+                                        description: Количество товара
+                                      amount:
+                                        type: bigint
+                                        required: false
+                                        description: полная сумма всех товаров данной категории
+                                  hash:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Хэш считанной карты
+                                  pan4:
+                                    type: varchar(255)
+                                    required: false
+                                    description: PAN4 считанной карты
+                                  currency:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Код валюты согласно ISO 4217
+                                  slip:
+                                    type: varchar
+                                    required: false
+                                    description: Слип СПАСИБО
+                                  terminalId:
+                                    type: varchar(255)
+                                    required: false
+                                    description: ID терминала
+                                  terminalLocation:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Локация терминала
+                                  partnerId:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Код партнера СПАСИБО
+                              debit:
+                                type: object
+                                properties:
+                                  idTransaction:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Идентификатор транзакции
+                                  dateAndTime:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Дата и время транзакции в исходном формате
+                                  bonuses:
+                                    type: bigint
+                                    required: false
+                                    description: Количество списанных бонусов в мин. единицах
+                                  amountToPay:
+                                    type: bigint
+                                    required: false
+                                    description: Сумма к оплате с учетом вычтеных бонусов в мин. единицах
+                                  totalAmount:
+                                    type: bigint
+                                    required: false
+                                    description: Сумма до вычета бонусов
+                                  cheque:
+                                    type: object
+                                    required: false
+                                    description: jsonb[] - Список позиций
+                                    properties:
+                                      product:
+                                        type: varchar(255)
+                                        required: false
+                                        description: Название товара
+                                      quantity:
+                                        type: float8
+                                        required: false
+                                        description: Количество товара
+                                      amount:
+                                        type: bigint
+                                        required: false
+                                        description: полная сумма всех товаров данной категории
+                                  discount:
+                                    type: object
+                                    required: false
+                                    description: jsonb[] - Список позиций
+                                    properties:
+                                      product:
+                                        type: varchar(255)
+                                        required: false
+                                        description: Название товара
+                                      quantity:
+                                        type: float8
+                                        required: false
+                                        description: Количество товара
+                                      amount:
+                                        type: bigint
+                                        required: false
+                                        description: полная сумма всех товаров данной категории
+                                  hash:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Хэш считанной карты
+                                  pan4:
+                                    type: varchar(255)
+                                    required: false
+                                    description: PAN4 считанной карты
+                                  currency:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Код валюты согласно ISO 4217
+                                  slip:
+                                    type: varchar
+                                    required: false
+                                    description: Слип СПАСИБО
+                                  terminalId:
+                                    type: varchar(255)
+                                    required: false
+                                    description: ID терминала
+                                  terminalLocation:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Локация терминала
+                                  partnerId:
+                                    type: varchar(255)
+                                    required: false
+                                    description: Код партнера СПАСИБО
+            agentType:
+              type: number
+              personalOffice: false
+              cube: false
+              enum: [0, 1, 2, 3, 4, 5, 6]
+              description: >
+                Признак агента, 1057
+                  * `0` - банковский платежный агент
+                  * `1` - банковский платежный субагент
+                  * `2` - платежный агент
+                  * `3` - платежный субагент
+                  * `4` - поверенный
+                  * `5` - комиссионер
+                  * `6` - иной агент
+            paymentAgentOperation:
+              type: varchar(24)
+              personalOffice: false
+              cube: false
+              description: Операция платежного агента, 1044
+            paymentTransferOperatorPhoneNumbers:
+              type: array
+              personalOffice: false
+              cube: false
+              description: Телефон оператора перевода, 1075. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+              items:
+                type: varchar(19)
+            paymentAgentPhoneNumbers:
+              type: array
+              personalOffice: false
+              cube: false
+              description: Телефон платежного агента, 1073. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+              items:
+                type: varchar(19)
+            paymentOperatorPhoneNumbers:
+              type: array
+              personalOffice: false
+              cube: false
+              description: Телефон оператора по приему платежей, 1074. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+              items:
+                type: varchar(19)
+            paymentOperatorName:
+              type: varchar(64)
+              personalOffice: false
+              cube: false
+              description: Наименование оператора перевода, 1026
+            paymentOperatorAddress:
+              type: varchar(243)
+              personalOffice: false
+              cube: false
+              description: Адрес оператора перевода, 1005
+            paymentOperatorINN:
+              type: varchar(12)
+              personalOffice: false
+              cube: false
+              description: ИНН оператора перевода, 1016
+            supplierPhoneNumbers:
+              type: array
+              personalOffice: false
+              cube: false
+              description: Телефон поставщика, 1171. Массив строк длиной от 1 до 19 символов, формат +{Ц}
+              items:
+                type: varchar(19)
+            additionalUserAttribute:
+              type: object
+              personalOffice: false
+              cube: false
+              description: Дополнительный реквизит пользователя, 1084
+              properties:
+                name:
+                  type: varchar(64)
+                  required: false
+                  description: Наименование дополнительного реквизита пользователя, 1085 (Длина атрибутов name + value не должна суммарно превышать 235 символов)
+                value:
+                  type: varchar(234)
+                  required: false
+                  description: Значение дополнительного реквизита пользователя, 1086  (Длина атрибутов name + value не должна суммарно превышать 235 символов)
+            automatNumber:
+              type: varchar(20)
+              personalOffice: false
+              cube: true
+              description: Номер автомата, 1036
+            settlementAddress:
+              type: varchar(243)
+              personalOffice: false
+              cube: Необходим для фискализации в ОД
+              description: Адрес расчетов, 1009
+            settlementPlace:
+              type: varchar(243)
+              personalOffice: false
+              cube: Необходим для фискализации в ОД
+              description: Место расчетов, 1187
+            customer:
+              type: varchar(243)
+              personalOffice: false
+              cube: false
+              description: Покупатель (клиент), 1227
+            customerINN:
+              type: varchar(12)
+              personalOffice: false
+              cube: false
+              description: ИНН покупателя (клиента), 1228
+            additionalAttribute:
+              type: varchar(16)
+              personalOffice: false
+              cube: false
+              description: Дополнительный реквизит чека(БСО), 1192
+        amount:
+          type: float8
+          personalOffice: true
+          cube: true
+          description: Сумма чека
+        fsNumber:
+          type: varchar(64)
+          personalOffice: false
+          cube: false
+          description: Номер ФН
+        deviceSN:
+          type: varchar(64)
+          personalOffice: false
+          cube: false
+          description: Серийник устройства
+        deviceRN:
+          type: varchar(64)
+          personalOffice: false
+          cube: false
+          description: Регистрационный номер устройства
+        ofdName:
+          type: varchar(256)
+          personalOffice: false
+          cube: false
+          description: Имя ОФД
+        ofdWebsite:
+          type: varchar(256)
+          personalOffice: false
+          cube: false
+          description: Сайт ОФД
+        ofdInn:
+          type: varchar(14)
+          personalOffice: false
+          cube: false
+          description: ИНН ОФД
+        fnsWebsite:
+          type: varchar(32)
+          personalOffice: false
+          cube: false
+          description: Сайт ФНС
+        shiftNumber:
+          type: varchar(6)
+          personalOffice: false
+          cube: false
+          description: Номер смены кассира
+        documentIndex:
+          type: int
+          personalOffice: false
+          cube: false
+          description: Номер чека за смену
+        processedAt:
+          type: timestamp
+          personalOffice: false
+          cube: false
+          description: Время обработки кассой
+        change:
+          type: float8
+          personalOffice: false
+          cube: false
+          description: Сдача
+        fp:
+          type: varchar(32)
+          personalOffice: false
+          cube: false
+          description: Фискальный признак
+        cashierId:
+          type: UUID(v4)
+          personalOffice: true
+          cube: false
+          description: Идентификатор кассира
+        companyINN:
+          type: varchar(12)
+          personalOffice: false
+          cube: false
+          description: ИНН торговой точки по фискализации
+        clientInfo:
+          type: object
+          personalOffice: false
+          cube: false
+          description: jsonb - Информация о клиенте
+          properties:
+            id:
+              type: UUID(v4)
+              required: true
+              description: Идентификатор клиента
+            discountCard:
+              type: varchar
+              required: true
+              description: Номер карты лояльности
+            inputMethod:
+              type: number
+              required: true
+              enum: [1, 2, 3]
+              description: >
+                Способ ввода номера карты (возможные значения)
+                  * `1` - Ручной ввод номера
+                  * `2` - Магнитная полоса
+                  * `3` - Сканирование графической информации
+        loyaltyContent:
+          type: object
+          personalOffice: false
+          cube: false
+          description: Дополнительные поля агрегации для лояльности
+          properties:
+            discAmount:
+              type: float4
+              required: false
+              description: Сумма без скидок - сумма со скидкой
+            netAmount:
+              type: float4
+              required: false
+              description: Сумма после скидок без налога
+            grossAmount:
+              type: float4
+              required: false
+              description: Сумма после скидок с учетом налога
+        returnCheckId:
+          type: UUID(v4)
+          personalOffice: false
+          cube: false
+          description: Идентификатор чека, для которого выполняется возврат
+        shiftId:
+          type: UUID(v4)
+          personalOffice: false
+          cube: false
+          description: Идентификатор смены
+        operationMode:
+          type: int
+          personalOffice: true
+          cube: true
+          enum: [0, 1, 2, 3, 4, 5]
+          description: >
+            Операционный режим, в котором был пробит чек. Битовая маска, по умолчанию 0
+              * `0` - Признак шифрование данных
+              * `1` - Признак автономного режима
+              * `2` - Признак автоматического режима
+              * `3` - Признак расчетов за услуги
+              * `4` - Признак формирования только БСО
+              * `5` - Признак ККТ для расчетов только в Интернет
+        callbackUrl:
+          type: varchar(255)
+          personalOffice: false
+          cube: false
+          description: URL для отправки результатов обработки чека POST запросом
+        fiscalizationStatus:
+          type: int
+          personalOffice: false
+          cube: Необходим для фискализации в ОД
+          enum: [1, 2, 3, 4, 5]
+          description: >
+            Статус фискализации чека
+              * `1` - В очереди
+              * `2` - Отправлен
+              * `3` - Фискализирован
+              * `4` - Ошибка
+              * `5` - На фискализации
+        fiscalizationError:
+          type: varchar(256)
+          personalOffice: false
+          cube: false
+          description: Описание ошибки для статуса фискализации с ошибкой
+        isNonFiscal:
+          type: boolean
+          personalOffice: true
+          cube: true
+          description: Признак, указывающий на то, что данный чек был пробит из нефискального режима
+        fiscalizedAt:
+          type: timestamp
+          personalOffice: false
+          cube: false
+          description: Время фискализации чека

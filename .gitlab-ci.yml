@@ -1,0 +1,87 @@
+image: node:lts
+
+# General settings
+variables:
+  SITE_BASE_PATH: /var/www
+
+# cache:
+#   paths:
+#     - node_modules/
+
+stages:
+  - build
+
+build:
+  stage: build
+  only:
+    - develop
+  tags:
+    - develop
+  variables:
+    NODE_ENV: production # all builds must be for production environment since react and others rely on it to produce fast and minimal bundle
+  script:
+    - build
+  environment:
+    name: develop
+    url: https://cube-develop.something.ru
+  artifacts:
+    paths: # node_modules don't go into distributive, it would be installed during deploy (mostly from yarn's cache of the server)
+      - build/
+      - ecosystem.config.js
+
+.devops: &devops |
+  # DevOps variables and functions
+  [[ "$TRACE" ]] && set -x
+
+  npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+  site_path=$SITE_BASE_PATH/$CI_ENVIRONMENT_SLUG
+
+  function build() {
+
+    echo "Install modules..."
+    npm install --production=true
+    echo "Install modules - Completed!"
+
+    echo "Copy env..."
+    pwd
+    cp /var/www/.$CI_ENVIRONMENT_SLUG.env .env
+    echo "Copy env - Completed!"
+    
+    echo "Migration project..."
+    node ace migration:run --force
+    echo "Migration project - Completed!"
+    
+    # node ace db:seed --files "./database/seeders/010_Role.ts"
+    # node ace db:seed --files "./database/seeders/050_Permission.ts"
+    # node ace db:seed --files "./database/seeders/070_AutomatMark.ts"
+    # node ace db:seed --files "./database/seeders/080_AutomatModel.ts"
+    # node ace db:seed --files "./database/seeders/270_Bank.ts"
+    # node ace db:seed --files "./database/seeders/320_Device.ts"
+    # node ace db:seed --files "./database/seeders/460_PulseUnit.ts"
+
+    
+    echo "Build project..."
+    npm run build
+    echo "Build project - Completed!"
+    
+    echo "Copy build folder for $CI_ENVIRONMENT_SLUG..."
+    cp -R build $site_path/
+    echo "Copy build folder - Completed!"  
+
+    echo "Copy env file $CI_ENVIRONMENT_SLUG from server..."
+    cp /var/www/.$CI_ENVIRONMENT_SLUG.env $site_path/build/.env
+    echo "Copy env file - Completed!"   
+
+    echo "Copy pm2 file $CI_ENVIRONMENT_SLUG from server..."
+    cp ecosystem.config.js $site_path/ecosystem.config.js
+    echo "Copy pm2 file - Completed!"   
+
+    cd $site_path/build && npm ci --production
+
+    echo "Launching app with sycning service..."
+    cd $site_path && pm2 startOrReload ecosystem.config.js
+
+  }
+
+before_script:
+  - *devops

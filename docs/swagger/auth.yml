@@ -1,0 +1,136 @@
+/api/signin:
+  post:
+    summary: Авторизация
+    tags:
+      - auth
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                required: true
+                type: string
+              password:
+                type: string
+                required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: OK
+
+/api/signup:
+  post:
+    summary: Регистрация
+    tags:
+      - auth
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                required: false
+                type: string
+              email:
+                required: true
+                type: string
+              password:
+                type: string
+                required: true
+    responses:
+      200:
+        description: OK
+
+/api/forgot/password:
+  post:
+    summary: Восстановление пароля
+    tags:
+      - auth
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                required: true
+                type: string
+    responses:
+      200:
+        description: OK
+
+/api/refresh/token:
+  post:
+    summary: Обновление токена
+    tags:
+      - auth
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              access:
+                required: true
+                type: string
+              refresh:
+                required: true
+                type: string
+    responses:
+      200:
+        description: OK
+
+# with token
+/api/confirm/email:
+  get:
+    summary: Подтверждение email
+    tags:
+      - auth
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: OK
+
+/api/confirm/invitation:
+  post:
+    tags:
+      - auth
+    security:
+      - bearerAuth: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                reqired: true
+    responses:
+      200:
+        description: OK
+
+/api/reset/password:
+  post:
+    summary: Сброс пароля
+    tags:
+      - auth
+    security:
+      - bearerAuth: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                reqired: true
+    responses:
+      200:
+        description: OK

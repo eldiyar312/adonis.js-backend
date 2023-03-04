@@ -1,0 +1,411 @@
+http://10.125.0.99:5000/api/main/status/{deviceId}:
+  post:
+    summary: Апи отправки от куба о его статусе
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 16
+          maxLength: 16
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                required: true
+                type: number
+                enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                description: >
+                  Команды для куба. 
+                    * `1` - Открыть меню
+                    * `2` - Закрыть меню
+                    * `3` - Перезагрузить устройство
+                    * `4` - Перезагрузить модем
+                    * `5` - Отвязать куб
+                    * `6` - Меню откыто
+                    * `7` - Меню закрыто
+                    * `8` - Устройство перезагружено
+                    * `9` - Модем перезагружен
+                    * `10` - Куб отвязан
+                    * `11` - Загрузить лог на HTTP сервер
+                    * `12` - Изменить настройки логгирования
+                    * `13` - Обновить эквайринговую конфигурацию jpay
+                    * `14` - Загрузить ключи KCV jpay
+                    * `15` - Загрузить мастер-ключи jpay
+                    * `16` - Перезагрузить рабочие ключи jpa
+    responses:
+      200:
+        description: OK
+
+http://10.125.0.99:5000/api/main/sale/{deviceId}:
+  post:
+    summary: Апи отправки от куба продаж/чеков
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 16
+          maxLength: 16
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                required: true
+                type: string
+                default: f0993643-85ae-4dab-95be-dd9f4b5cbd40
+                description: UuidV4 = f0993643-85ae-4dab-95be-dd9f4b5cbd40
+              operationMode:
+                required: true
+                type: number
+                default: 0
+              amount:
+                required: true
+                type: number
+                default: 100
+                description: Цена
+              processedAt:
+                required: true
+                type: string
+                default: '2021-12-21T12:25:28'
+              content:
+                required: true
+                type: object
+                properties:
+                  automatNumber:
+                    required: true
+                    type: string
+                    default: '3'
+                  settlementAddress:
+                    required: true
+                    type: string
+                    default: г Москва, Огородный проезд, д 8 стр 1
+                  settlementPlace:
+                    required: true
+                    type: string
+                    default: Холл
+                  type:
+                    required: true
+                    type: number
+                    default: 1
+                  checkClose:
+                    required: true
+                    type: object
+                    properties:
+                      taxationSystem:
+                        type: number
+                        default: 4
+                      payments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            amount:
+                              type: number
+                              description: Цена
+                              default: 100
+                            type:
+                              type: number
+                              default: 1
+                            index:
+                              type: number
+                              default: 0
+                            processedAt:
+                              type: string
+                              default: '2021-12-21T12:25:28'
+                            acquiringData:
+                              type: object
+                              properties:
+                                AID:
+                                  type: string
+                                  default: 'A0000000041010'
+                                APN:
+                                  type: string
+                                  default: 'MC Credit/Debit'
+                                IIN:
+                                  type: string
+                                  default: 'MC Credit/Debit'
+                                RRN:
+                                  type: string
+                                  default: '135512919542'
+                                TSI:
+                                  type: string
+                                  default: ''
+                                TVR:
+                                  type: string
+                                  default: '0000008001'
+                                acquirerAgentName:
+                                  type: string
+                                  default: null
+                                acquirerBankName:
+                                  type: string
+                                  default: 'МТС банк\r\nООО \"ОРАНФРЕШ\"'
+                                amount:
+                                  type: number
+                                  default: 140
+                                approvalCode:
+                                  type: string
+                                  default: '323036373038'
+                                cardholder:
+                                  type: string
+                                  default: null
+                                cashlessType:
+                                  type: number
+                                  default: 2
+                                date:
+                                  type: string
+                                  default: '2021-12-21T12:25:12.000+03:00'
+                                errorCode:
+                                  type: string
+                                  default: '00'
+                                errorMessage:
+                                  type: string
+                                  default: null
+                                expirationDate:
+                                  type: string
+                                  default: '240430'
+                                id:
+                                  type: string
+                                  default: 'a665c6ae-e26b-4c2f-ba39-63aa0efb3ad5'
+                                maskPan:
+                                  type: string
+                                  default: '************8894'
+                                signNeeded:
+                                  type: boolean
+                                  default: false
+                                slipNumber:
+                                  type: string
+                                  default: '000546'
+                                terminalId:
+                                  type: string
+                                  default: '73001181'
+                                transactionId:
+                                  type: string
+                                  default: '73001181'
+                                transactionResult:
+                                  type: string
+                                  default: 'approved'
+                                type:
+                                  type: string
+                                  default: purchase
+                  positions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        paymentMethodType:
+                          type: number
+                          default: 4
+                        paymentSubjectType:
+                          type: number
+                          default: 1
+                        price:
+                          type: number
+                          description: Цена
+                          default: 100
+                        quantity:
+                          type: number
+                          default: 1
+                        slotInfo:
+                          type: object
+                          properties:
+                            slotId:
+                              type: number
+                              default: 1
+                        tax:
+                          type: number
+                          default: 6
+                        text:
+                          type: string
+                          default: Энергетик Адреналин Раш 0,5 л
+                          description: Название товара
+    responses:
+      200:
+        description: OK
+
+http://10.125.0.99:5000/api/main/device/{deviceId}:
+  post:
+    summary: Апи пирвязки куба к автомату в ЛК
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 16
+          maxLength: 16
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pin:
+                type: string
+                description: Пин из шести числовых символов
+    responses:
+      200:
+        description: OK
+
+http://10.125.0.99:5000/api/main/sales:
+  get:
+    tags:
+      - delivery
+    parameters:
+      - name: page
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: pageSize
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      200:
+        description: OK
+
+status.${deviceId}:
+  post:
+    summary: Дейстиве от куба (Отправка статуса куба)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                enum: [6, 7, 8, 9, 10]
+                description: >
+                  Статус от куба
+                  * `6` - Меню открыт
+                  * `7` - Меню закрыт
+                  * `8` - Устройство перезагружено
+                  * `9` - Модем перезагружен
+                  * `10` - Cube отвязан от автомата
+
+receipt.${deviceId}:
+  post:
+    summary: Дейстиве от куба (Создание продажи/чека)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FromCubeReceipt'
+
+${deviceId}.receipt:
+  get:
+    summary: Чтение кубом (продажи/чеки)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ToCubeReceipt'
+
+${deviceId}.setting:
+  get:
+    summary: Чтение кубом (настройки автоматов)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ToCubeSetting'
+
+${deviceId}.planogram:
+  get:
+    summary: Чтение кубом (Обычная планограмма)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ToCubePlanogram'
+
+${deviceId}.pulsePlanogram:
+  get:
+    summary: Чтение кубом (Пульсовая планограмма)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ToCubePulsePlanogram'
+
+${deviceId}.command:
+  get:
+    summary: Чтение кубом (Команды на куб)
+    tags:
+      - delivery
+    parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ToCubeCommand'

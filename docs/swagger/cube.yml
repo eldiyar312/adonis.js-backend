@@ -1,0 +1,339 @@
+/api/cube/service/menu/statues:
+  post:
+    tags:
+      - cube
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                required: true
+                type: number
+                enum: [1, 2, 3, 4, 5, 11, 12, 13, 14, 15, 16]
+                description: >
+                  Команды для куба.
+                    * `1` - Открыть меню
+                    * `2` - Закрыть меню
+                    * `3` - Перезагрузить устройство
+                    * `4` - Перезагрузить модем
+                    * `5` - Отвязать куб
+                    * `11` - Загрузить лог на HTTP сервер
+                    * `12` - Изменить настройки логгирования
+                    * `13` - Обновить эквайринговую конфигурацию jpay
+                    * `14` - Загрузить ключи KCV jpay
+                    * `15` - Загрузить мастер-ключи jpay
+                    * `16` - Перезагрузить рабочие ключи jpa
+              devicesId:
+                type: array
+                required: true
+                items:
+                  type: number
+                  required: true
+    responses:
+      200:
+        description: OK
+  get:
+    tags:
+      - cube
+    responses:
+      200:
+        description: OK
+
+/api/cube/service/menu/pins:
+  post:
+    tags:
+      - cube
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              devicesId:
+                type: array
+                required: true
+                items:
+                  type: number
+                  required: true
+    responses:
+      200:
+        description: OK
+  patch:
+    tags:
+      - cube
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              devicesId:
+                type: array
+                required: true
+                items:
+                  type: number
+                  required: true
+              pin:
+                type: string
+                required: true
+    responses:
+      200:
+        description: OK
+
+/api/cube/sim/numbers:
+  patch:
+    tags:
+      - cube
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              numbers:
+                type: array
+                required: true
+                items:
+                  type: object
+                  required: true
+                  properties:
+                    simNumber:
+                      type: string
+                      required: false
+                    comment:
+                      type: string
+                      required: false
+                    deviceId:
+                      type: number
+                      required: true
+    responses:
+      200:
+        description: OK
+
+/api/devices/test:
+  post:
+    tags:
+      - cube
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              deviceName:
+                type: string
+                maxLength: 128
+                requred: true
+              activationDate:
+                type: date
+                requred: true
+              serialNumber:
+                type: string
+                requred: false
+              comment:
+                type: string
+                requred: false
+              simNumber:
+                type: string
+                requred: false
+              automatId:
+                type: number
+                requred: true
+    responses:
+      200:
+        description: OK
+
+/api/devices:
+  get:
+    tags:
+      - cube
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: page
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: pageSize
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: sortedBy
+        in: path
+        required: false
+        schema:
+          type: string
+          enum:
+            [
+              pin,
+              pinHash,
+              status,
+              deliveredCube,
+              automatName,
+              automatGroupId,
+              deviceName,
+              activationDate,
+              serialNumber,
+              comment,
+              simNumber,
+            ]
+      - name: sortedDesc
+        in: path
+        required: false
+        schema:
+          type: boolean
+      - name: filter
+        in: path
+        required: false
+        schema:
+          type: object
+          required: false
+          properties:
+            automatGroupId:
+              type: number
+              required: false
+            deviceName:
+              type: string
+              required: false
+            activationDate:
+              type: Date
+              required: false
+            serialNumber:
+              type: string
+              required: false
+            comment:
+              type: string
+              required: false
+            simNumber:
+              type: string
+              required: false
+            automatId:
+              type: number
+              required: false
+    responses:
+      200:
+        description: OK
+  post:
+    summary: Создать устройство
+    tags:
+      - cube
+    security:
+      - apiKey: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              deviceName:
+                type: string
+                maxLength: 128
+                required: true
+              accountId:
+                type: number
+                required: true
+              pin:
+                type: string
+                required: true
+
+    responses:
+      200:
+        description: OK
+  delete:
+    summary: Удалить устройство
+    tags:
+      - cube
+    security:
+      - apiKey: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              deviceName:
+                type: string
+                maxLength: 128
+                required: true
+              pin:
+                type: string
+                required: true
+    responses:
+      200:
+        description: OK
+
+
+/api/device/filter:
+  get:
+    tags:
+      - cube
+    parameters:
+      - name: page
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: pageSize
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: sortedBy
+        in: path
+        required: false
+        schema:
+          type: string
+          enum:
+            [
+              pin,
+              pinHash,
+              status,
+              deliveredCube,
+              automatName,
+              automatGroupId,
+              deviceName,
+              activationDate,
+              serialNumber,
+              comment,
+              simNumber,
+            ]
+      - name: sortedDesc
+        in: path
+        required: false
+        schema:
+          type: boolean
+      - name: filter
+        in: path
+        required: false
+        schema:
+          type: object
+          required: false
+          properties:
+            automatGroupId:
+              type: number
+              required: false
+            deviceName:
+              type: string
+              required: false
+            activationDate:
+              type: Date
+              required: false
+            serialNumber:
+              type: string
+              required: false
+            comment:
+              type: string
+              required: false
+            simNumber:
+              type: string
+              required: false
+            automatId:
+              type: number
+              required: false
+    responses:
+      200:
+        description: OK

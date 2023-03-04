@@ -1,0 +1,452 @@
+/api/automat/settings/{fromAutomatId}/{toAutomatId}:
+  get:
+    summary: Скопировать настройки автомата другому автомату
+    security:
+      - bearerAuth: []
+    tags:
+      - automatSettings
+    parameters:
+      - name: fromAutomatId
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: toAutomatId
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      200:
+        description: OK
+
+/api/automat/settings/{automatId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - automatSettings
+    parameters:
+      - name: automatId
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      200:
+        description: OK
+  patch:
+    tags:
+      - automatSettings
+    security:
+      - bearerAuth: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              setting:
+                type: object
+                required: false
+                properties:
+                  name:
+                    type: string
+                  checkReport:
+                    type: boolean
+                  salesStatisticSource:
+                    type: number
+                    enum: [0, 1, 2]
+                  busInactiveTimeout:
+                    type: number
+                  mainMode:
+                    type: number
+                    enum: [0, 1, 2, 3, 4, 5]
+                  clientEnable:
+                    type: number
+                    enum: [0, 1, 2]
+                  vmcAuditPortEnable:
+                    type: boolean
+                  vmcAuditPort:
+                    type: number
+                    enum: [0, 2, 3]
+                  vmcAuditBaudRate:
+                    type: number
+                    enum: [1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200]
+                  vmcAuditProtocol:
+                    type: number
+                    enum: [0, 1]
+                  scaleFactor:
+                    type: number
+                    minimum: 1
+                    maximum: 255
+                  decimalPlacesCash:
+                    type: number
+                    minimum: 0
+                    maximum: 4
+                  decimalPlacesCashless:
+                    type: number
+                    minimum: 0
+                    maximum: 4
+                  acquiringShiftCloseTime:
+                    type: string
+                  acquiringShiftClosePeriod:
+                    type: number
+                  currencyCashless:
+                    type: number
+                  timezone:
+                    type: number
+                    minimum: -12
+                    maximum: 14
+                  keypadDirection:
+                    type: number
+                    enum: [0, 1, 2, 3, 4]
+                  timeoutVendingInProcess:
+                    type: number
+                  timeoutCancelButtonWhileVending:
+                    type: number
+                  qrCodeMode:
+                    type: number
+                  updateAcquiringConfigAfterShiftClose:
+                    type: boolean
+                  loadWorkKeysAfterShiftClose:
+                    type: boolean
+                  automatId:
+                    type: number
+              automat:
+                type: object
+                required: false
+                properties:
+                  name:
+                    type: string
+                  longitude:
+                    type: string
+                  latitude:
+                    type: string
+                  phone:
+                    type: string
+                  serialNumber:
+                    type: string
+                  inventoryNumber:
+                    type: string
+                  comment:
+                    type: string
+                  place:
+                    type: string
+                  contact:
+                    type: string
+                  shedule:
+                    type: string
+                  address:
+                    type: string
+                  groupId:
+                    type: number
+                  parentId:
+                    type: number
+                  modelId:
+                    type: number
+              createChildren:
+                type: array
+                items:
+                  type: object
+                  required: false
+                  properties:
+                    name:
+                      type: string
+                      required: true
+                    modelId:
+                      type: number
+              updateChildren:
+                type: array
+                items:
+                  type: object
+                  required: false
+                  properties:
+                    id:
+                      type: number
+                      required: true
+                    name:
+                      type: string
+                    modelId:
+                      type: number
+              schedule:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                    required: true
+                  weeks:
+                    type: string
+                  timeFrom:
+                    type: string
+                  timeTo:
+                    type: string
+                  period:
+                    type: number
+                    minimum: 1
+                    maximum: 24
+              fiscalization:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                    required: true
+                  settlementAddress:
+                    type: string
+                  settlementPlace:
+                    type: string
+                  automatNumber:
+                    type: string
+                  operationMode:
+                    type: number
+                  taxReporting:
+                    type: number
+                    enum: [0, 1, 2, 3]
+                  taxationSystem:
+                    type: number
+              modePose:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                  posMode:
+                    type: number
+                    enum: [0, 1]
+                  posPort:
+                    type: number
+              modePulse:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                    required: true
+                  outputAPulseCost:
+                    type: number
+                    required: false
+                    default: 1.0
+                  outputBPulseCost:
+                    type: number
+                    required: false
+                    default: 1.0
+                  outputCPulseCost:
+                    type: number
+                    required: false
+                    default: 1.0
+                  outputAPulsePeriodMsec:
+                    type: number
+                    required: false
+                    default: 100
+                  outputBPulsePeriodMsec:
+                    type: number
+                    required: false
+                    default: 100
+                  outputCPulsePeriodMsec:
+                    type: number
+                    required: false
+                    default: 100
+                  outputAPulseDurationMsec:
+                    type: number
+                    required: false
+                    default: 50
+                  outputBPulseDurationMsec:
+                    type: number
+                    required: false
+                    default: 50
+                  outputCPulseDurationMsec:
+                    type: number
+                    required: false
+                    default: 50
+                  outputAPulseActive:
+                    type: number
+                    required: false
+                    default: 0
+                  outputBPulseActive:
+                    type: number
+                    required: false
+                    default: 0
+                  outputCPulseActive:
+                    type: number
+                    required: false
+                    default: 0
+                  inputAPulseCost:
+                    type: number
+                    required: false
+                    default: 1.0
+                  inputBPulseCost:
+                    type: number
+                    required: false
+                    default: 1.0
+                  inputAPulseMinDurationMsec:
+                    type: number
+                    required: false
+                    default: 5
+                  inputBPulseMinDurationMsec:
+                    type: number
+                    required: false
+                    default: 5
+                  inputAPulseMaxDurationMsec:
+                    type: number
+                    required: false
+                    default: 500
+                  inputBPulseMaxDurationMsec:
+                    type: number
+                    required: false
+                    default: 500
+                  inputAPulseActive:
+                    type: number
+                    required: false
+                    default: 0
+                  inputBPulseActive:
+                    type: number
+                    required: false
+                    default: 0
+                  inhibitInputActive:
+                    type: number
+                    required: false
+                    default: 0
+                  inhibitInputDurationMsec:
+                    type: number
+                    required: false
+                    default: 700
+                  inhibitAOutputActive:
+                    type: number
+                    required: false
+                    default: 0
+                  inhibitBOutputActive:
+                    type: number
+                    required: false
+                    default: 0
+                  inhibitOutputInverse:
+                    type: boolean
+                    required: false
+                    default: false
+                  vendServicePageText:
+                    type: string
+                    required: false
+                    default: ''
+                  paidCashButton:
+                    type: boolean
+                    required: false
+                    default: false
+                  choiceStepButton:
+                    type: boolean
+                    required: false
+                    default: false
+                  pulseServicePhone:
+                    type: string
+                    required: false
+                    default: '+7 (999) 999-99-99'
+                  fixedAmountSelectionScreenTimeoutSec:
+                    type: number
+                    required: false
+                    default: 60
+                  customAmountSelectionScreenTimeoutSec:
+                    type: number
+                    required: false
+                    default: 15
+                  unitSelectionScreenTimeoutSec:
+                    type: number
+                    required: false
+                    default: 15
+                  paymentConfirmationScreenTimeoutSec:
+                    type: number
+                    required: false
+                    default: 15
+                  showQrCodeScreenTimeoutSec:
+                    type: number
+                    required: false
+                    default: 15
+                  finalScreenTimeoutSec:
+                    type: number
+                    required: false
+                    default: 15
+              modeMdb:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                    required: true
+                  cashlessLevel:
+                    type: number
+                    minimum: 1
+                    maximum: 3
+                  cashlessAddress:
+                    type: number
+                    enum: [0x10, 0x60]
+                  shiftItemId:
+                    type: number
+                  sessionFunds:
+                    type: number
+              modeMdbExe:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                    required: true
+                  ccAuditPortEnable:
+                    type: boolean
+                  ccAuditPort:
+                    type: number
+                    enum: [0, 2, 3]
+                  ccAuditBaudRate:
+                    type: number
+                    enum: [1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200]
+                  ccAuditProtocol:
+                    type: nubmer
+                    enum: [0, 1]
+                  sessionFunds:
+                    type: number
+                  cashlessLevel:
+                    type: number
+                    minimum: 1
+                    maximun: 3
+                  cashlessAddress:
+                    type: number
+                    enum: [0x10, 0x60]
+              modeExeMaster:
+                type: object
+                required: false
+                properties:
+                  id:
+                    type: number
+                  billValidatorUsed:
+                    type: boolean
+                  coinChangerUsed:
+                    type: boolean
+                  cashless1Used:
+                    type: boolean
+                  cashless2Used:
+                    type: boolean
+                  cashCreditMax:
+                    type: number
+                  cashCreditTimeout:
+                    type: number
+                  billTypeAccepted:
+                    type: string
+                  multiVend:
+                    type: boolean
+                  payoutAlgorithmOfChanger:
+                    type: boolean
+                  payoutWithoutPurchase:
+                    type: boolean
+                  lowChangeThreshold:
+                    type: number
+                  inhibitBillValidatorInLowChange:
+                    type: boolean
+                  denyCashCreditExchange:
+                    type: boolean
+                  autorefund:
+                    type: boolean
+                  pilferorMode:
+                    type: boolean
+                  creditLimit:
+                    type: number
+    responses:
+      200:
+        description: OK

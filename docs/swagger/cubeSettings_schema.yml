@@ -1,0 +1,696 @@
+components:
+  schemas:
+    Descriptions:
+      type: object
+      properties:
+        cube:
+          type: boolean
+          description: сделано ли на кубе
+        personalOffice:
+          type: boolean
+          description: сделано ли на ЛК
+    Settings:
+      type: object
+      properties:
+        VMCModel:
+          type: int
+          cube: false
+          personalOffice: true
+          default:
+          minimum: 1
+          maximum: 202
+          description: >
+            Производитель и модель автомата
+              * `1` - LCM1
+              * `2` - Brisa H41
+              * `3` - Brisa H70
+              * `4` - Brisa H85
+              * `5` - Brisa МР Normal
+              * `6` - City
+              * `7` - City L
+              * `8` - City M
+              * `9` - Mistral H70
+              * `10` - Novara
+              * `11` - Palma
+              * `12` - Palma H70
+              * `13` - Palma H87
+              * `14` - Sienna
+              * `15` - Tempo ME
+              * `16` - Zensia
+              * `17` - BVM 676
+              * `18` - BVM 681
+              * `19` - BVM 695/3
+              * `20` - BVM 901 LEIsa
+              * `21` - BVM 951
+              * `22` - BVM 952
+              * `23` - BVM 972
+              * `24` - Gaia
+              * `25` - Gaia Style
+              * `26` - Iris
+              * `27` - LEI 400
+              * `28` - LEI 600
+              * `29` - LEI 700
+              * `30` - Chameleon
+              * `31` - Excellence
+              * `32` - Pitstart
+              * `33` - Crane 167
+              * `34` - Evolution
+              * `35` - Merchant 6
+              * `36` - DN 5800
+              * `37` - Pepsi
+              * `38` - Tru-vend
+              * `39` - Duetto
+              * `40` - FAS 400
+              * `41` - FAS 500 T
+              * `42` - Fashion 600 E6
+              * `43` - FAST
+              * `44` - FAST 900
+              * `45` - FAST 1050
+              * `46` - JUST NOW
+              * `47` - Krystal
+              * `48` - Perla
+              * `49` - Scudo 1050
+              * `50` - Fri-Z400
+              * `51` - D-05WP25S5
+              * `52` - D-05WP30S5
+              * `53` - D-05WP30S6
+              * `54` - D-05WP36S6
+              * `55` - D-06WP25S5
+              * `56` - D-06WP30S5
+              * `57` - D-06WP30S6
+              * `58` - D-06WP36S6
+              * `59` - D-07WP30S5
+              * `60` - D-07WP30S6
+              * `61` - D-07WP36S6
+              * `62` - D-08WP25S5
+              * `63` - D-08WP30S5
+              * `64` - D-08WP30S6
+              * `65` - D-08WP36S6
+              * `66` - D-09WP30S5
+              * `67` - D-09WP30S6
+              * `68` - CTG
+              * `69` - CTG-TOUCH
+              * `70` - DBX-400
+              * `71` - DRX
+              * `72` - DRX-50
+              * `73` - C02
+              * `74` - C03
+              * `75` - C010
+              * `76` - Bluetec G335
+              * `77` - Bluetec G546
+              * `78` - Cofemar BLUETEC G23
+              * `79` - Coffeemar G250
+              * `80` - Coffeemar G500
+              * `81` - Coffeemar G535
+              * `82` - Coffeemar G546
+              * `83` - Gourmet
+              * `84` - Vision Combo Plus
+              * `85` - Vision Easy Combo
+              * `86` - WE8
+              * `87` - G654M12
+              * `88` - D720
+              * `89` - Astro
+              * `90` - Brio
+              * `91` - Canto
+              * `92` - Colibri
+              * `93` - Concerto
+              * `94` - Diesis
+              * `95` - Jazz
+              * `96` - Karisma
+              * `97` - Kikko ES6
+              * `98` - Kikko IN7
+              * `99` - Kikko LB
+              * `100` - Kikko Max
+              * `101` - Kikko Max To Go
+              * `102` - Korinto
+              * `103` - Koro Prime
+              * `104` - Melodia
+              * `105` - Melodia SL
+              * `106` - Opera
+              * `107` - Rondo
+              * `108` - Samba
+              * `109` - Sfera
+              * `110` - Snakky
+              * `111` - Snakky 6-30
+              * `112` - Snakky LX
+              * `113` - Snakky Max
+              * `114` - Snakky SL
+              * `115` - Solista
+              * `116` - Tango
+              * `117` - Venezia LX
+              * `118` - Zenith
+              * `119` - Zeta
+              * `120` - CS220
+              * `121` - Zenius
+              * `122` - Nova
+              * `123` - P90
+              * `124` - OR70
+              * `125` - OR100
+              * `126` - OR130
+              * `127` - Caffè Europa
+              * `128` - Cino EC E3
+              * `129` - Cino EC E3 Pro
+              * `130` - Cino XS Grande E5
+              * `131` - Cino XS Grande Pro
+              * `132` - Cino XS Grande VHO
+              * `133` - Damian
+              * `134` - LaRhea BL eC
+              * `135` - LaRhea BL grande
+              * `136` - laRhea Business line Grande VHO
+              * `137` - LaRhea grande TV
+              * `138` - Lazio E5
+              * `139` - Luce E5
+              * `140` - Luce E6
+              * `141` - Luce Snack
+              * `142` - Luce X
+              * `143` - Luce X Snack
+              * `144` - Luce X2
+              * `145` - Luce X2 Pro
+              * `146` - Luce X2 TouchTV
+              * `147` - Sagoma Europa
+              * `148` - Sagoma H6
+              * `149` - Sagoma H7
+              * `150` - Sagoma H8
+              * `151` - Sagoma Luce
+              * `152` - Sagoma Milano
+              * `153` - Snack Europa
+              * `154` - XTRA
+              * `155` - Aliseo
+              * `156` - Atlante 500
+              * `157` - Corallo 1700
+              * `158` - Cristallo 400
+              * `159` - Cristallo 400 EVO
+              * `160` - Cristallo 600
+              * `161` - Diamante
+              * `162` - MegaCold Slave
+              * `163` - Phedra Espresso
+              * `164` - Phedra EVO Espresso
+              * `165` - Royal Prof
+              * `166` - Rubino 200
+              * `167` - Smeraldo 36/56
+              * `168` - 217 Sanden Vendo
+              * `169` - 811 Sanden Vendo
+              * `170` - G-Snack
+              * `171` - SVE DR9
+              * `172` - SVE DV9
+              * `173` - V-680
+              * `174` - V21
+              * `175` - Coffee Vito
+              * `176` - Shaker-M
+              * `177` - PSL1000
+              * `178` - VM16
+              * `179` - FoodBox
+              * `180` - FoodBox Long
+              * `181` - Nero
+              * `182` - Nova
+              * `183` - NovaBar
+              * `184` - Rosso
+              * `185` - ROSSO STREET
+              * `186` - RossoBar
+              * `187` - VS-21 HotCup
+              * `188` - 1800 S
+              * `189` - Presto
+              * `190` - W700
+              * `191` - W850
+              * `192` - W1000
+              * `193` - Акваматик
+              * `194` - Мини
+              * `195` - Стандарт
+              * `196` - 500 (незамерзайка)
+              * `197` - АТ-101/А
+              * `198` - Вита (бытовая модель)
+              * `199` - Рио (для продажи сока)
+              * `200` - Оптима
+              * `201` - Принт
+              * `202` - Профи
+        PairedVMCModels:
+          type: array
+          cube: false
+          personalOffice: true
+          default: []
+          minimum: 1
+          maximum: 202
+          items:
+            type: int
+          description: >
+            Список Производителей и моделей спаренных автоматов
+              * `1` - LCM1
+              * `2` - Brisa H41
+              * `3` - Brisa H70
+              * `4` - Brisa H85
+              * `5` - Brisa МР Normal
+              * `6` - City
+              * `7` - City L
+              * `8` - City M
+              * `9` - Mistral H70
+              * `10` - Novara
+              * `11` - Palma
+              * `12` - Palma H70
+              * `13` - Palma H87
+              * `14` - Sienna
+              * `15` - Tempo ME
+              * `16` - Zensia
+              * `17` - BVM 676
+              * `18` - BVM 681
+              * `19` - BVM 695/3
+              * `20` - BVM 901 LEIsa
+              * `21` - BVM 951
+              * `22` - BVM 952
+              * `23` - BVM 972
+              * `24` - Gaia
+              * `25` - Gaia Style
+              * `26` - Iris
+              * `27` - LEI 400
+              * `28` - LEI 600
+              * `29` - LEI 700
+              * `30` - Chameleon
+              * `31` - Excellence
+              * `32` - Pitstart
+              * `33` - Crane 167
+              * `34` - Evolution
+              * `35` - Merchant 6
+              * `36` - DN 5800
+              * `37` - Pepsi
+              * `38` - Tru-vend
+              * `39` - Duetto
+              * `40` - FAS 400
+              * `41` - FAS 500 T
+              * `42` - Fashion 600 E6
+              * `43` - FAST
+              * `44` - FAST 900
+              * `45` - FAST 1050
+              * `46` - JUST NOW
+              * `47` - Krystal
+              * `48` - Perla
+              * `49` - Scudo 1050
+              * `50` - Fri-Z400
+              * `51` - D-05WP25S5
+              * `52` - D-05WP30S5
+              * `53` - D-05WP30S6
+              * `54` - D-05WP36S6
+              * `55` - D-06WP25S5
+              * `56` - D-06WP30S5
+              * `57` - D-06WP30S6
+              * `58` - D-06WP36S6
+              * `59` - D-07WP30S5
+              * `60` - D-07WP30S6
+              * `61` - D-07WP36S6
+              * `62` - D-08WP25S5
+              * `63` - D-08WP30S5
+              * `64` - D-08WP30S6
+              * `65` - D-08WP36S6
+              * `66` - D-09WP30S5
+              * `67` - D-09WP30S6
+              * `68` - CTG
+              * `69` - CTG-TOUCH
+              * `70` - DBX-400
+              * `71` - DRX
+              * `72` - DRX-50
+              * `73` - C02
+              * `74` - C03
+              * `75` - C010
+              * `76` - Bluetec G335
+              * `77` - Bluetec G546
+              * `78` - Cofemar BLUETEC G23
+              * `79` - Coffeemar G250
+              * `80` - Coffeemar G500
+              * `81` - Coffeemar G535
+              * `82` - Coffeemar G546
+              * `83` - Gourmet
+              * `84` - Vision Combo Plus
+              * `85` - Vision Easy Combo
+              * `86` - WE8
+              * `87` - G654M12
+              * `88` - D720
+              * `89` - Astro
+              * `90` - Brio
+              * `91` - Canto
+              * `92` - Colibri
+              * `93` - Concerto
+              * `94` - Diesis
+              * `95` - Jazz
+              * `96` - Karisma
+              * `97` - Kikko ES6
+              * `98` - Kikko IN7
+              * `99` - Kikko LB
+              * `100` - Kikko Max
+              * `101` - Kikko Max To Go
+              * `102` - Korinto
+              * `103` - Koro Prime
+              * `104` - Melodia
+              * `105` - Melodia SL
+              * `106` - Opera
+              * `107` - Rondo
+              * `108` - Samba
+              * `109` - Sfera
+              * `110` - Snakky
+              * `111` - Snakky 6-30
+              * `112` - Snakky LX
+              * `113` - Snakky Max
+              * `114` - Snakky SL
+              * `115` - Solista
+              * `116` - Tango
+              * `117` - Venezia LX
+              * `118` - Zenith
+              * `119` - Zeta
+              * `120` - CS220
+              * `121` - Zenius
+              * `122` - Nova
+              * `123` - P90
+              * `124` - OR70
+              * `125` - OR100
+              * `126` - OR130
+              * `127` - Caffè Europa
+              * `128` - Cino EC E3
+              * `129` - Cino EC E3 Pro
+              * `130` - Cino XS Grande E5
+              * `131` - Cino XS Grande Pro
+              * `132` - Cino XS Grande VHO
+              * `133` - Damian
+              * `134` - LaRhea BL eC
+              * `135` - LaRhea BL grande
+              * `136` - laRhea Business line Grande VHO
+              * `137` - LaRhea grande TV
+              * `138` - Lazio E5
+              * `139` - Luce E5
+              * `140` - Luce E6
+              * `141` - Luce Snack
+              * `142` - Luce X
+              * `143` - Luce X Snack
+              * `144` - Luce X2
+              * `145` - Luce X2 Pro
+              * `146` - Luce X2 TouchTV
+              * `147` - Sagoma Europa
+              * `148` - Sagoma H6
+              * `149` - Sagoma H7
+              * `150` - Sagoma H8
+              * `151` - Sagoma Luce
+              * `152` - Sagoma Milano
+              * `153` - Snack Europa
+              * `154` - XTRA
+              * `155` - Aliseo
+              * `156` - Atlante 500
+              * `157` - Corallo 1700
+              * `158` - Cristallo 400
+              * `159` - Cristallo 400 EVO
+              * `160` - Cristallo 600
+              * `161` - Diamante
+              * `162` - MegaCold Slave
+              * `163` - Phedra Espresso
+              * `164` - Phedra EVO Espresso
+              * `165` - Royal Prof
+              * `166` - Rubino 200
+              * `167` - Smeraldo 36/56
+              * `168` - 217 Sanden Vendo
+              * `169` - 811 Sanden Vendo
+              * `170` - G-Snack
+              * `171` - SVE DR9
+              * `172` - SVE DV9
+              * `173` - V-680
+              * `174` - V21
+              * `175` - Coffee Vito
+              * `176` - Shaker-M
+              * `177` - PSL1000
+              * `178` - VM16
+              * `179` - FoodBox
+              * `180` - FoodBox Long
+              * `181` - Nero
+              * `182` - Nova
+              * `183` - NovaBar
+              * `184` - Rosso
+              * `185` - ROSSO STREET
+              * `186` - RossoBar
+              * `187` - VS-21 HotCup
+              * `188` - 1800 S
+              * `189` - Presto
+              * `190` - W700
+              * `191` - W850
+              * `192` - W1000
+              * `193` - Акваматик
+              * `194` - Мини
+              * `195` - Стандарт
+              * `196` - 500 (незамерзайка)
+              * `197` - АТ-101/А
+              * `198` - Вита (бытовая модель)
+              * `199` - Рио (для продажи сока)
+              * `200` - Оптима
+              * `201` - Принт
+              * `202` - Профи
+        CheckReport:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: true
+          description: Отправлять чеки в ОККТ
+        SalesStatisticSource:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          enum: [0, 1, 2]
+          description: >
+            Источник статистики продаж 
+              * `0` - включено снятие аудита по расписанию + сниффинг данных с шины 
+              * `1` - только аудит 
+              * `2` - только шина
+        EvaDtsReportSchedule:
+          type: object
+          cube: false
+          personalOffice: true
+          default:
+          description: Расписание снятия EVA-DTS отчетов.
+          properties:
+            Weekday:
+              type: array
+              cube: false
+              personalOffice: true
+              default: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+              description: Массив из вариантов значений, который показывает, в какие дни недели происходит событие
+              items:
+                type: string
+                enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+            TimeFrom:
+              type: string
+              cube: false
+              personalOffice: true
+              default: '00:00'
+              mininum: '00:00'
+              maximum: '23:00'
+              description: (шаг в 1 час) Начала промежутка времени, в который происходит событие
+            TimeTo:
+              type: string
+              cube: false
+              personalOffice: true
+              default: '00:00'
+              mininum: '00:00'
+              maximum: '23:00'
+              description: (шаг в 1 час) Конец промежутка времени, в который происходит событие
+            Period:
+              type: integer
+              cube: false
+              personalOffice: true
+              minimum: 1
+              maximum: 24
+              default: 2
+              description: Период, в часах
+        BusInactiveTimeout:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 180
+          description: Количество секунд, в течение которых блокировка шины не считается ошибкой
+        MainMode:
+          type: int
+          cube: true
+          personalOffice: true
+          default: 0
+          enum: [0, 1, 2, 3, 4, 5]
+          description: >
+            Режим работы устройства.
+              * `0` - MDB_EXE
+              * `1` - MDB
+              * `2` - EXE_master
+              * `3` - POS
+              * `4` - Pulse
+              * `5` - CafeCo
+        ClientEnable:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          enum: [0, 1, 2]
+          description: >
+            Custom управляет включением спящего режима dm. В спящем режиме dm никак не управляет экраном кубика. Нужно для некоторых клиентов со своим софтом.
+              * `0` - Выключено
+              * `1` - Custom
+              * `2` - вавилон вендинг
+        VMCAuditPortEnable:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: true
+          description: Включить порт аудита
+        VMCAuditPort:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 3
+          enum: [0, 2, 3]
+          description: >
+            Порт аудита вендингового автомата. 
+              * `0` - DEX1
+              * `2` - UART1
+              * `3` - DEX2
+        VMCAuditBaudRate:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 2400
+          enum: [1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200]
+          description: Скорость передачи аудита вендингового автомата.
+        VMCAuditProtocol:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          enum: [0, 1]
+          description: >
+            Протокол аудита вендингового автомата. 
+              * `0` - ddcmp
+              * `1` - dex
+        ScaleFactor:
+          type: int
+          cube: true
+          personalOffice: true
+          default: 1
+          minimum: 1
+          maximum: 255
+          description: Фактор шкалы цен.
+        DecimalPlacesCash:
+          type: int
+          cube: true
+          personalOffice: true
+          default: 2
+          minimum: 0
+          maximum: 4
+          description: Количество десятичных разрядов до запятой при оплате за наличные. Значение должно быть равно значению в автомате.
+        DecimalPlacesCashless:
+          type: int
+          cube: true
+          personalOffice: true
+          default: 2
+          minimum: 0
+          maximum: 4
+          description: Количество десятичных разрядов до запятой при безналичной оплате
+        AcquiringShiftCloseTime:
+          type: string
+          cube: false
+          personalOffice: true
+          default: '12:00'
+          description: Время отправки информации при закрытии эквайринговой смены
+        AcquiringShiftClosePeriod:
+          type: int
+          cube: false
+          personalOffice: true
+          minimum: 1
+          maximum: 365
+          default:
+          description: ериод (в днях) отправки информации при закрытии эквайринговой смены
+        CurrencyCashless:
+          type: int
+          cube: true
+          personalOffice: true
+          default: 643
+          description: Код валюты по ISO 4217
+        Timezone:
+          type: int
+          cube: true
+          personalOffice: true
+          default: 3
+          minimum: -12
+          maximum: 14
+          description: GMT offset
+        KeypadDirection:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          enum: [0, 1, 2, 3, 4]
+          description: >
+            Положение стрелки, которая указывает на клавиатуру автомата на экране “выберите товар”
+              * `0` - выключено
+              * `1` - слева
+              * `2` - сверху
+              * `3` - справа
+              * `4` - снизу
+        TimeoutVendingInProcess:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 360
+          description: Время ожидания выдачи товара, по истечении которого производится отмена, сек
+        TimeoutCancelButtonWhileVending:
+          type: int
+          cube: false
+          personalOffice: false
+          default: 60
+          description: Время, спустя которое на экране выдачи товара появляется кнопка "отмена"
+        QrCodeMode:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 0
+          minimum: 0
+          maximum: больше 0
+          description: >
+            Режим отображения QR кода
+              * `0` - показывать QR код 
+              * `>0` - не показывать QR код
+        UpdateAcquiringConfigAfterShiftClose:
+          type: bool
+          cube: false
+          personalOffice: false
+          default: true
+          description: Обновлять конфигурацию после закрытия смены
+        LoadWorkKeysAfterShiftClose:
+          type: bool
+          cube: false
+          personalOffice: false
+          default: false
+          description: Обновлять рабочие ключи после закрытия смены
+        DeviceNonGuiModeEnabled:
+          type: bool
+          cube: true
+          personalOffice: false
+          default: false
+          description: Режим работы без графического интерфейса, который активируется пушем на открытие сервисного меню
+        DmJpayActivationTimeout:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 300
+          description: Количество секунд, в течение которых ожидается активация Jpay в процессе производства в сервисном меню
+        PayAfterItemSelectedTimeoutSec:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 30
+          description: Время в секундах, после истечения которого устройство переходит с экрана информации о выбранном товаре в режим оплаты, как будто нажата кнопка оплатить на экране информации о выбранном товаре.  0 - после выбора товара оплата начинается мгновенно; -1 - переход в режим оплаты по таймауту не осуществляется.  Примечание о взаимосвязи  PayAfterItemSelectedTimeoutSec и ItemSelectedTimeoutSec= Контролируется только тот тайм-аут который короче. Если тайм-ауты == то приоритет имеет ItemSelectedTimeoutSec. Если оба таймаута == 0, то оплата начнется мнгновенно.
+        ItemSelectedTimeoutSec:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 30
+          description: Время в секундах, после истечения которого устройство переходит с экрана информации о выбранном товаре на главный экран, как будто нажата кнопка отмена на экране информации о выбранном товаре.  0 - переход на главный экран по таймауту не осуществляется.  Примечание о взаимосвязи  PayAfterItemSelectedTimeoutSec и ItemSelectedTimeoutSec= Контролируется только тот тайм-аут который короче. Если тайм-ауты == то приоритет имеет ItemSelectedTimeoutSec. Если оба таймаута == 0, то оплата начнется мнгновенно.
+        SpinnerСommunicationWithVendingTimeoutSec:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 15
+          description: Время отображения спиннера и информационного сообщения при ожидании ответа от автомата, в секундах
+        SpinnerPappWaitingTimeoutSec:
+          type: int
+          cube: true
+          personalOffice: false
+          default: 15
+          description: Время отображения спиннера и информационного сообщения при ожидании ответа от платежного приложения (papp), в секундах. Например, после нажатия кнопки "Оплатить картой"

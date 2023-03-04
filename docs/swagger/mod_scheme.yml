@@ -1,0 +1,457 @@
+components:
+  schemas:
+    MDB:
+      type: object
+      properties:
+        CashlessLevel:
+          type: int
+          cube: true
+          minimum: 1
+          maximum: 3
+          default: 1
+          personalOffice: true
+          description: Уровень Cashless peripheral. Реализован только уровень 1.
+        CashlessAddress:
+          type: int
+          cube: true
+          personalOffice: true
+          enum: [0x10, 0x60]
+          default: 0x10
+          description: Адрес Cashless peripheral
+        ShiftItemId:
+          type: int
+          cube: true
+          default: 0
+          personalOffice: true
+          description: Сдвиг номера товара полученного от MDB мастера. Значение актуально для варианта подключения автомата по EXE, когда something Cube является Cashless на MDB монетоприемника. Некоторые монетоприемники передают в качестве ID товара на MDB не price line, полученный от автомата по EXE, а его декрементированное значение. Для таких автоматов требуется установить это значение в 1.
+        SessionFunds:
+          type: int
+          cube: true
+          default: 0xFFFF
+          personalOffice: true
+          description: Стартовый баланс. Значение Funds Available, которое отправляется в автомат при открытии сессии.
+        CardSalesStopped:
+          type: bool
+          cube: true
+          default: false
+          personalOffice: false
+          description: Эмуляция запрета приёма карт автоматом. true - запретить приём
+        TryRestartSessionAfterCancelled:
+          type: int
+          cube: true
+          enum: [0, 1]
+          personalOffice: false
+          default: 0
+          description: >
+            Перезапуск сессии обмена с автоматом при нажатии на кнопку "Отмена" на экране подтверждения выбора товара и возврат к экрану "Выберите товар".
+              * `0` - выкл 
+              * `1` - вкл
+        RepeatFailedPurchase:
+          type: int
+          cube: true
+          default: 0
+          minimum: 0
+          maximum: 100000000000
+          personalOffice: false
+          description: Повторная выдача товара после неудачной попытки. Показ экрана "Повторно выбрите товар на клавиатуре автомата". После двух неудачных попыток выдачи одного и того же товара производится возврат внесённого кредита. > 0 - вкл., <= 0 - выкл
+        RepeatFailedPurchaseTimeoutSec:
+          type: int
+          cube: true
+          default: 30
+          personalOffice: false
+          description: Время ожидания повторного выбора товара, по его истечении, если покупатель не выбрал товар, производится возврат внесённого кредита, в сек.
+        AlwaysIdleSession:
+          type: int
+          cube: true
+          default: 0
+          personalOffice: false
+          description: >
+            Включает режим Always Idle Session согласно MDB протоколу. В этом режиме сессия продажи всё время открыта и устройство ожидает от пользователя выбора товара на автомате.
+              * `0` - выкл 
+              * `1` - вкл
+    Exe-master:
+      type: object
+      properties:
+        BillValidatorUsed:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: true
+          description: Опрашивать купюроприемник или нет
+        CoinChangerUsed:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: true
+          description: Опрашивать монетоприемник или нет
+        Cashless1Used:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Опрашивать устройство бесконтактной оплаты 1 или нет
+        Cashless2Used:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Опрашивать устройство бесконтактной оплаты 2 или нет
+        CashCreditMax:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 3550
+          description: Максимальный кредит, который можно внести наличными, в копейках
+        CashCreditTimeout:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 360
+          description: Тайм-аут кредита в секундах. В случае если попытка покупки не предпринята в течении указанного времени с момента последнего пополнения кредита, то кредит обнуляется.
+        BillTypeAccepted:
+          type: array
+          cube: false
+          personalOffice: true
+          default: [1000, 5000, 10000, 20000]
+          description: Массив из номиналов принимаемых валют, в копейках
+        MultiVend:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: true
+          description: Если активно, то не выдавать сдачу автоматически после продажи.
+        PayoutAlgorithmOfChanger:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Пытаться использовать алгоритм выдачи сдачи реализованный в монетоприемнике. Поддерживается только отдельными моделями монетоприемников.
+        PayoutWithoutPurchase:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Разрешить выдавать наличный кредит обратно в случае когда попытка покупки не была совершена
+        LowChangeThreshold:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 2000
+          description: Если сумма монет в монетоприемнике меньше указанной, то включается режим "мало сдачи", при этом ... Сумма в копейках.
+        InhibitBillValidatorInLowChange:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: true
+          description: Не принимать купюры в режиме "мало сдачи"
+        DenyCashCreditExchange:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Запрет размена наличного кредита
+        Autorefund:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Автоматически возвращать кредит, если автомат не выдал товар
+        PilferorMode:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description:
+        CreditLimit:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Ограничение внесенного кредита. 0 - не установлено
+    POS:
+      type: object
+      properties:
+        PosMode:
+          type: integer
+          default: 1
+          enum: [0, 1]
+          description: >
+            Подключение в режиме POS через сокет или через последовательный порт. Подключение через последовательный порт было слабо оттестировано.
+              * `0` - com
+              * `1` - socket
+        PosPort:
+          type: integer
+          default: 1
+          description: Номер последовательного порта
+    CafeCo:
+      type: object
+      properties:
+        CameraResolution:
+          type: int
+          default: 2
+          enum: [0, 1, 2, 3, 4, 5]
+          description: >
+            Разрешение камеры
+              * `0` - 320x240
+              * `1` - 640x480
+              * `2` - 800x600
+              * `3` - 1024x768
+              * `4` - 1280x720
+              * `5` - 1600x1200
+        CameraBrightness:
+          type: int
+          default: -250
+          minimum: -1024
+          maximum: 1023
+          description: Значение яркости камеры
+        CameraContrast:
+          type: int
+          default: 550
+          minimum: -2048
+          maximum: 2047
+          description: Значение контрастности камеры
+        CameraRotate:
+          type: int
+          default: 0
+          minimum: -180
+          maximum: 180
+          description: Поворот изображения с камеры на дисплее (в градусах)
+        CameraVideoEnabled:
+          type: bool
+          default: false
+          description: Включить изображение с камеры на дисплее
+        CameraControlsEnabled:
+          type: bool
+          default: false
+          description: Отобразить элементы управления камерой на дисплее
+        CameraFirstFlashLedBrightness:
+          type: int
+          default: 100
+          minimum: 0
+          maximum: 100
+          description: Яркость светодиода вспышки №1 (в процентах)
+        CameraSecondFlashLedOn:
+          type: bool
+          default: true
+          description: Включить светодиод вспышки №2
+        DecoderDebugEnabled:
+          type: bool
+          default: false
+          description: Вывод отладочной информации (debug) в лог о времени сканирования. После успешного сканирования куб не переходит в режим оплаты товара
+        CafeCoServerUrl:
+          type: string
+          default: 'https://api.cafeco.ru/market/'
+          description: URL-адрес сервера
+    Pulse:
+      type: object
+      properties:
+        OutputAPulseCost:
+          type: double
+          cube: false
+          personalOffice: true
+          default: 1.0
+          description: Сумма, на которую уменьшается значение кредита, при формировании импульса на выходе A (индекс 0)
+        OutputBPulseCost:
+          type: double
+          cube: false
+          personalOffice: true
+          default: 1.0
+          description: Сумма, на которую уменьшается значение кредита, при формировании импульса на выходе B (индекс 1)
+        OutputCPulseCost:
+          type: double
+          cube: false
+          personalOffice: true
+          default: 1.0
+          description: Сумма, на которую уменьшается значение кредита, при формировании импульса на выходе C (индекс 2)
+        OutputAPulsePeriodMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 100
+          description: Период повторения импульсов на выходе A (индекс 0), в мс
+        OutputBPulsePeriodMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 100
+          description: Период повторения импульсов на выходе B (индекс 1), в мс
+        OutputCPulsePeriodMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 100
+          description: Период повторения импульсов на выходе C (индекс 2), в мс
+        OutputAPulseDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 50
+          description: Длительность импульса на выходе A (индекс 0), в мс
+        OutputBPulseDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 50
+          description: Длительность импульса на выходе B (индекс 1), в мс
+        OutputCPulseDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 50
+          description: Длительность импульса на выходе C (индекс 2), в мс
+        OutputAPulseActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень импульса выхода A (индекс 0), * - отключен (любое значение отличное от 0 и 1)
+        OutputBPulseActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень импульса выхода B (индекс 1), * - отключен (любое значение отличное от 0 и 1)
+        OutputCPulseActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень импульса выхода C (индекс 2), * - отключен (любое значение отличное от 0 и 1)
+        InputAPulseCost:
+          type: double
+          cube: false
+          personalOffice: true
+          default: 1.0
+          description: Сумма, на которую увеличивается значение кредита, при зачислении импульса на входе A (индекс 0)
+        InputBPulseCost:
+          type: double
+          cube: false
+          personalOffice: true
+          default: 1.0
+          description: Сумма, на которую увеличивается значение кредита, при зачислении импульса на входе B (индекс 1)
+        InputAPulseMinDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 5
+          description: Минимальное время импульса на входе A (индекс 0), импульсы с меньшей длительностью будут игнорироваться, в мс
+        InputBPulseMinDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 5
+          description: Минимальное время импульса на входе B (индекс 1), импульсы с меньшей длительностью будут игнорироваться, в мс
+        InputAPulseMaxDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 500
+          description: Максимальное время импульса на входе A (индекс 0), импульсы с большей длительностью будут игнорироваться, в мс
+        InputBPulseMaxDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 500
+          description: Максимальное время импульса на входе B (индекс 1), импульсы с большей длительностью будут игнорироваться, в мс
+        InputAPulseActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень импульса на входе A (индекс 0), * - отключен (любое значение отличное от 0 и 1)
+        InputBPulseActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень импульса на входе B (индекс 1), * - отключен (любое значение отличное от 0 и 1)
+        InhibitInputActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень входа Inhibit, * - отключен (любое значение отличное от 0 и 1)
+        InhibitInputDurationMsec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 700
+          description: Время, в течение которого не должен меняться уровень сигнала Inhibit на входе для его детектирования, в мс
+        InhibitAOutputActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень выхода InhibitA, * - отключен (любое значение отличное от 0 и 1)
+        InhibitBOutputActive:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 0
+          description: Активный уровень выхода InhibitB, * - отключен (любое значение отличное от 0 и 1)
+        InhibitOutputInverse:
+          type: bool
+          cube: false
+          personalOffice: true
+          default: false
+          description: Инверсия выходов Inhibit, true - выходы Inhibit становятся сигналами разрешения, false - сигналами запрета
+        VendServicePageText:
+          type: string
+          cube: false
+          personalOffice: false
+          default:
+          description: онтент экрана сервиса. Передается на устройство в html разметке (https://doc.qt.io/qt-5/richtext-html-subset.html)
+        PaidCashButton:
+          type: bool
+          cube: false
+          personalOffice: false
+          default: false
+          description: Включение/отключение кнопки отпуска товара/услуги за фактически внесенный нал
+        ChoiceStepButton:
+          type: bool
+          cube: false
+          personalOffice: false
+          default: false
+          description: Включить/отключить кнопку произвольного выбора
+        FixedAmountSelectionScreenTimeoutSec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 60
+          description: Начальное значение таймера обратного отсчета на экране выбора фиксированных позиций оплаты, сек
+        CustomAmountSelectionScreenTimeoutSec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 15
+          description: Начальное значение таймера обратного отсчета на экране произвольного выбора, сек
+        UnitSelectionScreenTimeoutSec:
+          type: int
+          cube: false
+          personalOffice: false
+          default: 15
+          description: Начальное значение таймера обратного отсчета на экране выбора единицы измерения, сек
+        PaymentConfirmationScreenTimeoutSec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 15
+          description: Начальное значение таймера обратного отсчета на экране подтверждения оплаты, сек
+        ShowQrCodeScreenTimeoutSec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 15
+          description: Начальное значение таймера обратного отсчета на экране показа QR-кода, сек
+        FinalScreenTimeoutSec:
+          type: int
+          cube: false
+          personalOffice: true
+          default: 15
+          description: Начальное значение таймера обратного отсчета на финальном экране, сек
+        PulseServicePhone:
+          type: string
+          cube: true
+          personalOffice: true
+          default: '+7 (999) 999-99-99'
+          description: Номер телефона для связи, который отображается на экране "Сервис временно недоступен", !устаревший параметр!
